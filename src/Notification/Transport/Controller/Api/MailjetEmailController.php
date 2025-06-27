@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notification\Transport\Controller\Api;
 
+use App\General\Infrastructure\ValueObject\SymfonyUser;
 use App\Notification\Application\Service\MailjetEmailService;
 use App\Notification\Application\Service\NotificationManager;
 use App\Notification\Infrastructure\Repository\NotificationRepository;
@@ -13,18 +14,23 @@ use JsonException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use OpenApi\Attributes as OA;
 
 /**
  * Class MailjetEmailController
  * @package App\Controller
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
-class MailjetEmailController extends AbstractController
+#[AsController]
+#[OA\Tag(name: 'Notification')]
+class MailjetEmailController
 {
     public function __construct(
         private readonly NotificationManager $notificationManager,
@@ -35,11 +41,14 @@ class MailjetEmailController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param SymfonyUser $symfonyUser
+     * @param Request     $request
+     *
+     * @throws JsonException
      * @return JsonResponse
-     * @throws Exception
      */
-    public function __invoke(Request $request): JsonResponse
+    #[Route(path: '/v1/platform/notifications/batch', name: 'notification_batch_create', methods: [Request::METHOD_POST])]
+    public function __invoke(SymfonyUser $symfonyUser, Request $request): JsonResponse
     {
         $data = $this->populateEntity($request);
         $data['paths'] = $this->notificationManager->getPaths($request);

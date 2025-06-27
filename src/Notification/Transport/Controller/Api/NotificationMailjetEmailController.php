@@ -4,39 +4,43 @@ declare(strict_types=1);
 
 namespace App\Notification\Transport\Controller\Api;
 
+use App\General\Infrastructure\ValueObject\SymfonyUser;
 use App\Notification\Application\Service\NotificationManager;
 use Doctrine\ORM\Exception\ORMException;
 use Exception;
 use JsonException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class MailjetEmailController
  * @package App\Controller
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
-final class NotificationMailjetEmailController extends AbstractController
+#[AsController]
+#[OA\Tag(name: 'Notification')]
+readonly class NotificationMailjetEmailController
 {
     public function __construct(
-        private readonly NotificationManager $notificationManager
+        private NotificationManager $notificationManager
     )
     {
     }
 
     /**
-     * @param Request $request
      *
      * @throws JsonException
      * @throws ORMException
      * @throws TransportExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      * @throws Exception
-     * @return JsonResponse
      */
-    public function __invoke(Request $request): JsonResponse
+    #[Route(path: '/v1/platform/notifications', name: 'notification_create', methods: [Request::METHOD_POST])]
+    public function __invoke(SymfonyUser $symfonyUser, Request $request): JsonResponse
     {
         $data = $this->populateEntity($request);
         $notification = $this->notificationManager->validateNotification(
