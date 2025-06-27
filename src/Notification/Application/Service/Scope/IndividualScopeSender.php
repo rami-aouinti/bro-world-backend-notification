@@ -25,17 +25,25 @@ readonly class IndividualScopeSender implements NotificationSenderInterface
 
     /**
      * @param SmsNotification|EmailNotification|PushNotification $notification
-     * @param string $channel
-     * @return array
+     * @param string                                             $channel
+     *
      * @throws ORMException
-     * @throws TransportExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @return array
      */
     public function send(SmsNotification|EmailNotification|PushNotification $notification, string $channel): array
     {
         if($channel === 'EMAIL') {
             return $this->notificationService->sendNotificationEmail(
                 $notification
+            );
+        }
+
+        $users = $this->notificationService->fetchAllMembers($notification->getScopeTarget(), $notification->getScope(), $channel);
+        if (!empty($users)) {
+            return $this->notificationService->sendNotification(
+                $users,
+                $notification,
+                $channel
             );
         }
 

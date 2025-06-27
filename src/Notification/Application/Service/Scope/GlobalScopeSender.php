@@ -32,6 +32,14 @@ readonly class GlobalScopeSender implements NotificationSenderInterface
                 $notification
             );
         }
+        $users = $this->notificationService->fetchAllMembers($notification->getScopeTarget(), $notification->getScope(), $channel);
+        if (!empty($users)) {
+            return $this->notificationService->sendNotification(
+                $users,
+                $notification,
+                $channel
+            );
+        }
 
         throw new ORMException("Empty members");
     }

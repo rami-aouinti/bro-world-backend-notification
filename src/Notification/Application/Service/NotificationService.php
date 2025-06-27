@@ -8,6 +8,7 @@ use App\Notification\Application\Service\Channel\EmailService;
 use App\Notification\Application\Service\Channel\PushService;
 use App\Notification\Application\Service\Channel\SmsService;
 use App\Notification\Domain\Entity\EmailNotification;
+use App\Notification\Domain\Entity\Enum\Scope;
 use App\Notification\Domain\Entity\PushNotification;
 use App\Notification\Domain\Entity\SmsNotification;
 use App\Notification\Infrastructure\Repository\NotificationRepository;
@@ -106,5 +107,51 @@ readonly class NotificationService
         }
 
         return $response;
+    }
+
+    /**
+     * @throws ORMException
+     */
+    public function fetchAllMembers(?array $scopeTarget, Scope $scope, string $channel): array
+    {
+        if($scopeTarget) {
+            $users = $this->generateAllUsers($scopeTarget, $scope);
+
+        } else {
+            $users = $this->generateAllUsers(null, $scope);
+        }
+
+        if (!empty($users)) {
+            return array_filter($users, static function ($user) use ($channel) {
+                return match ($channel) {
+                    'EMAIL' => isset($user['email']),
+                    'PUSH' => isset($user['name']),
+                    'SMS' => isset($user['phone']),
+                    default => false,
+                };
+            });
+        }
+
+        throw new ORMException("Empty members");
+    }
+
+    public function generateAllUsers(?array $scopeTarget, Scope $scope): array
+    {
+        return $this->getUsers();
+    }
+
+    public function getUsers(): array
+    {
+        return [
+            [
+                'id' => '123e4567-e89b-12d3-a456-426614174000',
+                'name' => 'Rami Aouinti',
+                'title' => 'Backend-end Developer',
+                'email' => 'rami.aouinti@gmail.com',
+                'avatar' => 'https://robohash.org/rami',
+                'phone' => '004917635587613',
+                'role' => 'Member',
+            ]
+        ];
     }
 }
