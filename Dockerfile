@@ -112,8 +112,8 @@ COPY --chown=${USERNAME}:${USERNAME} ./docker/fish/config.fish /home/${USERNAME}
 COPY --chown=${USERNAME}:${USERNAME} . $APP_HOME/
 
 # install all PHP dependencies
-RUN if [ "$BUILD_ARGUMENT_ENV" = "dev" ] || [ "$BUILD_ARGUMENT_ENV" = "test" ]; then COMPOSER_MEMORY_LIMIT=-1 composer install --optimize-autoloader --no-interaction --no-progress; \
-    else export APP_ENV=$BUILD_ARGUMENT_ENV && COMPOSER_MEMORY_LIMIT=-1 composer install --optimize-autoloader --no-interaction --no-progress --no-dev; \
+RUN if [ "$BUILD_ARGUMENT_ENV" = "dev" ] || [ "$BUILD_ARGUMENT_ENV" = "test" ]; then COMPOSER_MEMORY_LIMIT=-1 composer update --optimize-autoloader --no-interaction --no-progress; \
+    else export APP_ENV=$BUILD_ARGUMENT_ENV && COMPOSER_MEMORY_LIMIT=-1 composer update --optimize-autoloader --no-interaction --no-progress --no-dev; \
     fi
 
 # create cached config file .env.local.php in case staging/prod environment

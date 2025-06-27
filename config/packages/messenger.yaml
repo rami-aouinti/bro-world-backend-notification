@@ -30,9 +30,9 @@ framework:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
                     exchange:
-                        name: high
+                        name: notification_high
                     queues:
-                        messages_high: ~
+                        messages_notification_high: ~
                 # default configuration
                 retry_strategy:
                     max_retries: 3

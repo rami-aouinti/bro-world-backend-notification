@@ -437,6 +437,11 @@
       <path value="$PROJECT_DIR$/tools/10_phpcpd/vendor/sebastian/cli-parser" />
       <path value="$PROJECT_DIR$/tools/10_phpcpd/vendor/composer" />
       <path value="$PROJECT_DIR$/tools/10_phpcpd/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/symfony/mailjet-mailer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/mercure" />
+      <path value="$PROJECT_DIR$/vendor/symfony/twilio-notifier" />
+      <path value="$PROJECT_DIR$/vendor/symfony/mercure-bundle" />
+      <path value="$PROJECT_DIR$/vendor/twilio/sdk" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

@@ -1,17 +1,8 @@
-blog-controllers:
+notification-controllers:
     resource:
-        path: ../src/Blog/Transport/Controller/Api/
-        namespace: App\Blog\Transport\Controller\Api
+        path: ../src/Notification/Transport/Controller/Api/
+        namespace: App\Notification\Transport\Controller\Api
     type: attribute
     prefix: /api
-    defaults:
-        _format: json
-
-blog-public-controllers:
-    resource:
-        path: ../src/Blog/Transport/Controller/Frontend/
-        namespace: App\Blog\Transport\Controller\Frontend
-    type: attribute
-    prefix: /
     defaults:
         _format: json

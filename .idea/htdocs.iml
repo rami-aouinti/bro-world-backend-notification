@@ -242,6 +242,11 @@
       <excludeFolder url="file://$MODULE_DIR$/tools/10_phpcpd/vendor/sebastian/cli-parser" />
       <excludeFolder url="file://$MODULE_DIR$/tools/10_phpcpd/vendor/sebastian/version" />
       <excludeFolder url="file://$MODULE_DIR$/tools/10_phpcpd/vendor/systemsdk/phpcpd" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/mailjet-mailer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/mercure" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/mercure-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/twilio-notifier" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/twilio/sdk" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

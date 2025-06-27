@@ -7,6 +7,10 @@ parameters:
     locale: 'en'
     app.notifications.email_sender: admin@localhost
     api_media_base_url: '%env(API_MEDIA_BASE_URL)%'
+    akeneo_client_secret: '%env(resolve:AKENEO_CLIENT_SECRET)%'
+    mailjet_api_key: '%env(MAILJET_API_KEY)%'
+    mailjet_secret_key: '%env(MAILJET_SECRET_KEY)%'
+    mailjet_sender_email: '%env(MAILJET_SENDER_EMAIL)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -59,11 +63,6 @@ services:
         tags:
             - { name: controller.argument_value_resolver, priority: 150 }
 
-    App\Blog\Transport\EventListener\CacheInvalidationListener:
-        arguments: [ '@cache.app' ]
-        tags:
-            - { name: doctrine.event_listener, event: postPersist }
-
     App\General\Infrastructure\Messenger\Strategy\FailedRetry:
         arguments:
             $isRetryable: '%env(bool:MESSENGER_FAILED_IS_RETRYABLE)%'
@@ -114,14 +113,42 @@ services:
     App\General\Infrastructure\Service\ApiProxyService:
         arguments:
             $apiMediaBaseUrl: '%api_media_base_url%'
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Notification\Application\Service\Channel\SmsService:
+        arguments:
+            $sid: '%env(TWILIO_SID)%'
+            $token: '%env(TWILIO_AUTH_TOKEN)%'
+            $from: '%env(TWILIO_FROM)%'
+
+    App\Notification\Application\Service\MailjetTemplateService:
+        arguments:
+            $mailjetApiKey: '%mailjet_api_key%'
+            $mailjetSecretKey: '%mailjet_secret_key%'
+
+    App\Notification\Application\Service\MailjetEmailService:
+        arguments:
+            $mailjetApiKey: '%mailjet_api_key%'
+            $mailjetSecretKey: '%mailjet_secret_key%'
+            $mailjetSenderEmail: '%mailjet_sender_email%'
+
+    App\Notification\Application\Factory\Notification\:
+        resource: '../src/Notification/Application/Factory/Notification'
+        autowire: true
+        autoconfigure: true
+        tags: [ 'app.notification_factory' ]
+
+    App\Notification\Application\Factory\Notification\NotificationFactoryResolver:
+        arguments:
+            $factories: !tagged_iterator app.notification_factory
 when@dev:
     services:
         _defaults:
             autowire: true
             autoconfigure: true
 
-        App\Blog\Infrastructure\DataFixtures\:
-            resource: '../src/Blog/Infrastructure/DataFixtures/*'
+        App\Notification\Infrastructure\DataFixtures\:
+            resource: '../src/Notification/Infrastructure/DataFixtures/*'
 
         App\Tests\TestCase\:
             resource: '../tests/TestCase/*'
@@ -151,8 +178,8 @@ when@test:
             autoconfigure: true
             public: true
 
-        App\Blog\Infrastructure\DataFixtures\:
-            resource: '../src/Blog/Infrastructure/DataFixtures/*'
+        App\Notification\Infrastructure\DataFixtures\:
+            resource: '../src/Notification/Infrastructure/DataFixtures/*'
 
         App\Tests\TestCase\:
             resource: '../tests/TestCase/*'
