@@ -20,60 +20,61 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 class EmailNotification extends Notification
 {
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.channel'])]
     public ?string $channel = 'EMAIL';
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'Notification', 'Notification.emailSenderName'])]
     #[Assert\NotBlank]
     #[Assert\NotNull]
     protected string $emailSenderName;
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'Notification', 'Notification.emailSenderEmail'])]
     #[Assert\NotBlank]
     #[Assert\NotNull]
     protected string $emailSenderEmail;
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.emailSubject'])]
     #[Assert\NotBlank]
     #[Assert\NotNull]
     protected string $emailSubject;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.emailContentPlain'])]
     public ?string $emailContentPlain = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.emailContentHtml'])]
     public ?string $emailContentHtml = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:templateId'])]
     public ?int $templateId = 0;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.emailRecipientsCc'])]
     protected ?array $emailRecipientsCc = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.emailRecipientsBcc'])]
     protected ?array $emailRecipientsBcc = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.emailRecipientsReplyTo'])]
     protected ?array $emailRecipientsReplyTo = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.mediaIdsAttachments'])]
     protected ?array $mediaIdsAttachments = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.binaryAttachments'])]
     protected ?array $binaryAttachments = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.recipients'])]
     protected ?array $recipients = null;
 
     public function getEmailSenderName(): string { return $this->emailSenderName; }

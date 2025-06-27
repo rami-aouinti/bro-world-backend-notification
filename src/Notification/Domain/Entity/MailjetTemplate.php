@@ -39,19 +39,19 @@ class MailjetTemplate implements EntityInterface, Stringable
     private UuidInterface $id;
 
     #[ORM\Column(type:'integer')]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'MailjetTemplate', 'MailjetTemplate.templateId'])]
     private int $templateId;
 
     #[ORM\Column(type:'string', length:255)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'MailjetTemplate', 'MailjetTemplate.name'])]
     private string $name;
 
     #[ORM\Column(type:'string', length:10, nullable: true)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'MailjetTemplate', 'MailjetTemplate.locale'])]
     private ?string $locale = '';
 
     #[ORM\Column(type:'json')]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'MailjetTemplate', 'MailjetTemplate.variables'])]
     private array $variables = [];
 
     /**

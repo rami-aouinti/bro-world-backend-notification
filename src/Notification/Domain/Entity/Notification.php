@@ -53,31 +53,31 @@ class Notification implements EntityInterface, Stringable
     ])]
     private UuidInterface $id;
 
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.channel'])]
     public ?string $channel = null;
 
     #[ORM\Column(type: 'string', enumType: Scope::class)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'Notification', 'Notification.scope'])]
     protected Scope $scope;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'Notification', 'Notification.scopeTarget'])]
     protected ?array $scopeTarget = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.status'])]
     protected ?string $status = 'pending';
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'Notification', 'Notification.sendAfter'])]
     protected ?DateTimeInterface $sendAfter = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:read', 'entity:write', 'Notification', 'Notification.completedAt'])]
     protected ?DateTimeInterface $completedAt = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
-    #[Groups(['entity:write', 'entity:read'])]
+    #[Groups(['entity:read', 'entity:write', 'Notification', 'Notification.callback'])]
     protected ?array $callback;
 
     /**

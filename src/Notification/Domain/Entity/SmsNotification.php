@@ -15,21 +15,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 class SmsNotification extends Notification
 {
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.channel'])]
     public ?string $channel = 'SMS';
 
     #[ORM\Column(type: 'string', length: 11)]
     #[Assert\NotBlank]
     #[Assert\NotNull]
     #[Assert\Length(max: 11)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.smsSenderName'])]
     protected string $smsSenderName;
 
     #[ORM\Column(type: 'string', length: 320)]
     #[Assert\NotBlank]
     #[Assert\NotNull]
     #[Assert\Length(max: 320)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.smsContent'])]
     protected string $smsContent;
 
     public function getSmsSenderName(): string

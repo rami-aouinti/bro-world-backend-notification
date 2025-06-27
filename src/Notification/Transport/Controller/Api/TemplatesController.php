@@ -39,9 +39,11 @@ readonly class TemplatesController
     /**
      * Get current user blog data, accessible only for 'IS_AUTHENTICATED_FULLY' users
      *
+     * @param SymfonyUser $symfonyUser
+     *
+     * @throws ExceptionInterface
      * @throws InvalidArgumentException
      * @throws JsonException
-     * @throws ExceptionInterface
      * @return JsonResponse
      */
     #[Route(path: '/v1/templates', name: 'public_templates_index', methods: [Request::METHOD_GET])]

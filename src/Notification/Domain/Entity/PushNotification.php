@@ -15,25 +15,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 class PushNotification extends Notification
 {
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.channel'])]
     public ?string $channel = 'PUSH';
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.topic'])]
     protected string $topic;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.pushTitle'])]
     protected ?string $pushTitle;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.pushContent'])]
     protected string $pushContent;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['entity:read', 'entity:write'])]
+    #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.pushSubtitle '])]
     protected ?string $pushSubtitle = null;
 
     public function getTopic(): ?string
