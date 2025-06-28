@@ -44,7 +44,7 @@ readonly class UserNotificationController
     #[Route(path: '/v1/profile/notifications', name: 'notification_profile', methods: [Request::METHOD_GET])]
     public function __invoke(SymfonyUser $symfonyUser): JsonResponse
     {
-        $targetId = Uuid::fromString($symfonyUser->getUserIdentifier());
+        $targetId = $symfonyUser->getUserIdentifier();
         $notifications = $this->notificationRepository->findAll();
         $userNotifications = array_filter($notifications, static function ($notification) use ($targetId) {
             return in_array($targetId, $notification->getScopeTarget() ?? [], true);
