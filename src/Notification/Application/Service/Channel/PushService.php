@@ -27,13 +27,13 @@ readonly class PushService
      */
     public function generatePushNotification(PushNotification $notification, ?array $user): array
     {
-        if(
-            ($notification->getScope() === Scope::WORKPLACE) &&
-            ($notification->getScope() === Scope::SEGMENT)
+        $scope = $notification->getTopic();
+
+        if (
+            in_array($notification->getScope(), [Scope::WORKPLACE, Scope::SEGMENT], true) &&
+            isset($user['id'])
         ) {
-            $scope = $notification->getTopic() . $user['id'];
-        } else {
-            $scope = $notification->getTopic();
+            $scope .= $user['id'];
         }
         $update = new Update(
             $scope,
