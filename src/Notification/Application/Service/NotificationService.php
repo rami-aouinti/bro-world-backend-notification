@@ -100,10 +100,16 @@ readonly class NotificationService
             default => throw new InvalidArgumentException('Invalid notification type received')
         };
 
-        if($users) {
+        if ($users) {
             foreach ($users as $user) {
-                $response[] = $service->{$method}($notification, $user, $channel);
+                $response[] = $service->{$method}($notification, $user);
             }
+
+            return $response;
+        }
+
+        if ($notification instanceof EmailNotification) {
+            $response[] = $service->{$method}($notification, null);
         }
 
         return $response;
