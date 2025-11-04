@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="symfony@localhost">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.51">
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.53">
     <root id="1"/>
     <collation id="2" parent="1" name="armscii8_bin">
       <Charset>armscii8</Charset>
@@ -977,53 +977,53 @@
     </table>
     <column id="307" parent="299" name="id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="308" parent="299" name="title">
-      <DasType>longtext|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>longtext|0s</StoredType>
     </column>
     <column id="309" parent="299" name="blog_subtitle">
-      <DasType>varchar(250)|0s</DasType>
       <Position>3</Position>
+      <StoredType>varchar(250)|0s</StoredType>
     </column>
     <column id="310" parent="299" name="author">
       <Comment>(DC2Type:uuid)</Comment>
-      <DasType>char(36)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>char(36)|0s</StoredType>
     </column>
     <column id="311" parent="299" name="logo">
       <Comment>(DC2Type:uuid)</Comment>
-      <DasType>char(36)|0s</DasType>
       <Position>5</Position>
+      <StoredType>char(36)|0s</StoredType>
     </column>
     <column id="312" parent="299" name="color">
-      <DasType>varchar(36)|0s</DasType>
       <Position>6</Position>
+      <StoredType>varchar(36)|0s</StoredType>
     </column>
     <column id="313" parent="299" name="slug">
-      <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
+      <StoredType>varchar(255)|0s</StoredType>
     </column>
     <column id="314" parent="299" name="visible">
-      <DasType>tinyint(1)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>8</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
     </column>
     <column id="315" parent="299" name="created_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>9</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="316" parent="299" name="updated_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>10</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <index id="317" parent="299" name="PRIMARY">
       <ColNames>id</ColNames>
@@ -1037,56 +1037,56 @@
     </key>
     <column id="319" parent="300" name="id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="320" parent="300" name="post_id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <Position>2</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="321" parent="300" name="parent_id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <Position>3</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="322" parent="300" name="author">
       <Comment>(DC2Type:uuid)</Comment>
-      <DasType>char(36)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>char(36)|0s</StoredType>
     </column>
     <column id="323" parent="300" name="content">
-      <DasType>longtext|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
+      <StoredType>longtext|0s</StoredType>
     </column>
     <column id="324" parent="300" name="medias">
       <Comment>(DC2Type:uuid)</Comment>
-      <DasType>char(36)|0s</DasType>
       <Position>6</Position>
+      <StoredType>char(36)|0s</StoredType>
     </column>
     <column id="325" parent="300" name="published_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="326" parent="300" name="visible">
-      <DasType>tinyint(1)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>8</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
     </column>
     <column id="327" parent="300" name="created_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>9</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="328" parent="300" name="updated_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>10</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <foreign-key id="329" parent="300" name="FK_7882EFEF4B89032C">
       <ColNames>post_id</ColNames>
@@ -1118,35 +1118,35 @@
     </key>
     <column id="335" parent="301" name="id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="336" parent="301" name="post_id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <Position>2</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="337" parent="301" name="comment_id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <Position>3</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="338" parent="301" name="user">
       <Comment>(DC2Type:uuid)</Comment>
-      <DasType>char(36)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>char(36)|0s</StoredType>
     </column>
     <column id="339" parent="301" name="created_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>5</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="340" parent="301" name="updated_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>6</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <foreign-key id="341" parent="301" name="FK_B9250DB54B89032C">
       <ColNames>post_id</ColNames>
@@ -1178,66 +1178,66 @@
     </key>
     <column id="347" parent="302" name="id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="348" parent="302" name="blog_id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="349" parent="302" name="title">
-      <DasType>varchar(250)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
+      <StoredType>varchar(250)|0s</StoredType>
     </column>
     <column id="350" parent="302" name="author">
       <Comment>(DC2Type:uuid)</Comment>
-      <DasType>char(36)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>char(36)|0s</StoredType>
     </column>
     <column id="351" parent="302" name="summary">
-      <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
+      <StoredType>varchar(255)|0s</StoredType>
     </column>
     <column id="352" parent="302" name="content">
-      <DasType>longtext|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
+      <StoredType>longtext|0s</StoredType>
     </column>
     <column id="353" parent="302" name="medias">
-      <DasType>json|0s</DasType>
       <Position>7</Position>
+      <StoredType>json|0s</StoredType>
     </column>
     <column id="354" parent="302" name="published_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>8</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="355" parent="302" name="visible">
-      <DasType>tinyint(1)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>9</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
     </column>
     <column id="356" parent="302" name="slug">
-      <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>10</Position>
+      <StoredType>varchar(255)|0s</StoredType>
     </column>
     <column id="357" parent="302" name="created_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>11</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="358" parent="302" name="updated_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>12</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <foreign-key id="359" parent="302" name="FK_BA5AE01DDAE07E97">
       <ColNames>blog_id</ColNames>
@@ -1260,15 +1260,15 @@
     </key>
     <column id="363" parent="303" name="post_id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="364" parent="303" name="tag_id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <foreign-key id="365" parent="303" name="FK_2E931ED74B89032C">
       <ColNames>post_id</ColNames>
@@ -1303,39 +1303,39 @@ tag_id</ColNames>
     </key>
     <column id="371" parent="304" name="id">
       <Comment>(DC2Type:uuid_binary_ordered_time)</Comment>
-      <DasType>binary(16)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>binary(16)|0s</StoredType>
     </column>
     <column id="372" parent="304" name="visible">
-      <DasType>tinyint(1)|0s</DasType>
       <DefaultExpression>1</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
     </column>
     <column id="373" parent="304" name="color">
-      <DasType>varchar(36)|0s</DasType>
       <Position>3</Position>
+      <StoredType>varchar(36)|0s</StoredType>
     </column>
     <column id="374" parent="304" name="name">
-      <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>varchar(255)|0s</StoredType>
     </column>
     <column id="375" parent="304" name="description">
-      <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
+      <StoredType>varchar(255)|0s</StoredType>
     </column>
     <column id="376" parent="304" name="created_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>6</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="377" parent="304" name="updated_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>7</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <index id="378" parent="304" name="PRIMARY">
       <ColNames>id</ColNames>
@@ -1349,41 +1349,41 @@ tag_id</ColNames>
     </key>
     <column id="380" parent="305" name="id">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>bigint|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>bigint|0s</StoredType>
     </column>
     <column id="381" parent="305" name="body">
-      <DasType>longtext|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>longtext|0s</StoredType>
     </column>
     <column id="382" parent="305" name="headers">
-      <DasType>longtext|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
+      <StoredType>longtext|0s</StoredType>
     </column>
     <column id="383" parent="305" name="queue_name">
-      <DasType>varchar(190)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>varchar(190)|0s</StoredType>
     </column>
     <column id="384" parent="305" name="created_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="385" parent="305" name="available_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="386" parent="305" name="delivered_at">
       <Comment>(DC2Type:datetime_immutable)</Comment>
-      <DasType>datetime|0s</DasType>
       <Position>7</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <index id="387" parent="305" name="PRIMARY">
       <ColNames>id</ColNames>
@@ -1409,82 +1409,82 @@ tag_id</ColNames>
     </key>
     <column id="392" parent="306" name="id">
       <AutoIncrement>1</AutoIncrement>
-      <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
+      <StoredType>int|0s</StoredType>
     </column>
     <column id="393" parent="306" name="version">
-      <DasType>int|0s</DasType>
       <DefaultExpression>1</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>2</Position>
+      <StoredType>int|0s</StoredType>
     </column>
     <column id="394" parent="306" name="created_at">
-      <DasType>datetime|0s</DasType>
       <Position>3</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="395" parent="306" name="name">
-      <DasType>varchar(150)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
+      <StoredType>varchar(150)|0s</StoredType>
     </column>
     <column id="396" parent="306" name="command">
-      <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
+      <StoredType>varchar(200)|0s</StoredType>
     </column>
     <column id="397" parent="306" name="arguments">
-      <DasType>longtext|0s</DasType>
       <Position>6</Position>
+      <StoredType>longtext|0s</StoredType>
     </column>
     <column id="398" parent="306" name="cron_expression">
-      <DasType>varchar(200)|0s</DasType>
       <Position>7</Position>
+      <StoredType>varchar(200)|0s</StoredType>
     </column>
     <column id="399" parent="306" name="last_execution">
-      <DasType>datetime|0s</DasType>
       <Position>8</Position>
+      <StoredType>datetime|0s</StoredType>
     </column>
     <column id="400" parent="306" name="last_return_code">
-      <DasType>int|0s</DasType>
       <Position>9</Position>
+      <StoredType>int|0s</StoredType>
     </column>
     <column id="401" parent="306" name="log_file">
-      <DasType>varchar(150)|0s</DasType>
       <Position>10</Position>
+      <StoredType>varchar(150)|0s</StoredType>
     </column>
     <column id="402" parent="306" name="priority">
-      <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>11</Position>
+      <StoredType>int|0s</StoredType>
     </column>
     <column id="403" parent="306" name="execute_immediately">
-      <DasType>tinyint(1)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>12</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
     </column>
     <column id="404" parent="306" name="disabled">
-      <DasType>tinyint(1)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>13</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
     </column>
     <column id="405" parent="306" name="locked">
-      <DasType>tinyint(1)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>14</Position>
+      <StoredType>tinyint(1)|0s</StoredType>
     </column>
     <column id="406" parent="306" name="ping_back_url">
-      <DasType>varchar(255)|0s</DasType>
       <Position>15</Position>
+      <StoredType>varchar(255)|0s</StoredType>
     </column>
     <column id="407" parent="306" name="ping_back_failed_url">
-      <DasType>varchar(255)|0s</DasType>
       <Position>16</Position>
+      <StoredType>varchar(255)|0s</StoredType>
     </column>
     <column id="408" parent="306" name="notes">
-      <DasType>longtext|0s</DasType>
       <NotNull>1</NotNull>
       <Position>17</Position>
+      <StoredType>longtext|0s</StoredType>
     </column>
     <index id="409" parent="306" name="PRIMARY">
       <ColNames>id</ColNames>
