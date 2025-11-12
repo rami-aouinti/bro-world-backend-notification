@@ -442,6 +442,7 @@
       <path value="$PROJECT_DIR$/vendor/symfony/twilio-notifier" />
       <path value="$PROJECT_DIR$/vendor/symfony/mercure-bundle" />
       <path value="$PROJECT_DIR$/vendor/twilio/sdk" />
+      <path value="$PROJECT_DIR$/vendor/bro-world/core-bundle" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

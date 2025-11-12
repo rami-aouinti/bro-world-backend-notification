@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Notification\Transport\Controller\Api;
 
-use App\General\Domain\Utils\JSON;
-use App\General\Infrastructure\ValueObject\SymfonyUser;
-use App\Notification\Infrastructure\Repository\MailjetTemplateRepository;
 use App\Notification\Infrastructure\Repository\NotificationRepository;
+use Bro\WorldCoreBundle\Domain\Utils\JSON;
+use Bro\WorldCoreBundle\Infrastructure\ValueObject\SymfonyUser;
 use Closure;
 use Exception;
 use JsonException;
@@ -40,12 +39,9 @@ readonly class NotificationsController
     /**
      * Get current user blog data, accessible only for 'IS_AUTHENTICATED_FULLY' users
      *
-     * @param SymfonyUser $symfonyUser
-     *
      * @throws ExceptionInterface
      * @throws InvalidArgumentException
      * @throws JsonException
-     * @return JsonResponse
      */
     #[Route(path: '/v1/notifications', name: 'public_notifications_index', methods: [Request::METHOD_GET])]
     #[Cache(smaxage: 10)]
@@ -63,13 +59,10 @@ readonly class NotificationsController
             ),
             true,
         );
+
         return new JsonResponse($output);
     }
 
-    /**
-     *
-     * @return Closure
-     */
     private function getClosure(): Closure
     {
         return function (ItemInterface $item): array {
@@ -87,9 +80,6 @@ readonly class NotificationsController
         return $this->getBlogs();
     }
 
-    /**
-     * @return array
-     */
     private function getBlogs(): array
     {
         return $this->notificationRepository->findAll();

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Notification\Application\Service;
 
-
 use App\Notification\Domain\Entity\EmailNotification;
 use App\Notification\Infrastructure\Repository\MailjetTemplateRepository;
 use Exception;
@@ -24,8 +23,6 @@ use function is_array;
 use function is_object;
 
 /**
- * Class MailjetEmailService
- *
  * @package App\Notification\Application\Service
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -39,7 +36,8 @@ readonly class MailjetEmailService
         private string $mailjetSenderEmail,
         private KernelInterface $kernel,
         private LoggerInterface $logger
-    ) {}
+    ) {
+    }
 
     /**
      * @throws Exception|TransportExceptionInterface|ServerExceptionInterface|RedirectionExceptionInterface|DecodingExceptionInterface|ClientExceptionInterface
@@ -55,6 +53,38 @@ readonly class MailjetEmailService
     public function sendEmailBatch($notification): array
     {
         return $this->handleEmailSend($notification, true);
+    }
+
+    public function flattenVariables(array $variables, string $prefix = ''): array
+    {
+        $flattened = [];
+        foreach ($variables as $key => $value) {
+            $newKey = $prefix ? "{$prefix}.{$key}" : $key;
+            if (is_array($value) || is_object($value)) {
+                $flattened += $this->flattenVariables((array)$value, $newKey);
+            } else {
+                $flattened[$newKey] = $value;
+            }
+        }
+
+        return $flattened;
+    }
+
+    public function verifyRequiredFields(array $requiredFields, array $data): bool
+    {
+        foreach ($requiredFields as $key => $field) {
+            if (str_contains($key, 'items.')) {
+                $parts = explode('.', $field);
+                $indexKey = 'items.0.' . $parts[0];
+                if (!isset($data[$indexKey])) {
+                    return false;
+                }
+            } elseif (!isset($data[$field])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -73,7 +103,9 @@ readonly class MailjetEmailService
 
         $requiredVariables = [];
         if ($templateId !== 0) {
-            $template = $this->templateRepository->findOneBy(['templateId' => $templateId]);
+            $template = $this->templateRepository->findOneBy([
+                'templateId' => $templateId,
+            ]);
             if (!$template) {
                 throw new RuntimeException('Template not found');
             }
@@ -102,6 +134,7 @@ readonly class MailjetEmailService
                 }
             }
         }
+
         return $attachments;
     }
 
@@ -113,14 +146,18 @@ readonly class MailjetEmailService
         foreach ($recipients as $recipient) {
             if (!isset($recipient['email'], $recipient['variables'])) {
                 $errors[] = $this->logError($recipient, 'Each recipient must have an email and variables');
+
                 continue;
             }
 
-            if (!empty($requiredVars) && !$this->verifyRequiredFields(
+            if (
+                !empty($requiredVars) && !$this->verifyRequiredFields(
                     $this->flattenVariables($requiredVars),
                     $this->flattenVariables($recipient['variables'])
-                )) {
+                )
+            ) {
                 $errors[] = $this->logError($recipient, 'Some required variables are missing');
+
                 continue;
             }
 
@@ -135,7 +172,10 @@ readonly class MailjetEmailService
             $messages[] = $message;
         }
 
-        return ['messages' => $messages, 'errors' => $errors];
+        return [
+            'messages' => $messages,
+            'errors' => $errors,
+        ];
     }
 
     private function prepareMessages(array $recipients, ?array $attachments, ?array $requiredVars, ?int $templateId, EmailNotification $notification): array
@@ -148,18 +188,23 @@ readonly class MailjetEmailService
         if (!isset($recipient['email'], $recipient['variables'])) {
             $errors[] = $this->logError($recipient, 'Recipient must have an email');
         }
-        if (!empty($requiredVars) && !$this->verifyRequiredFields(
+        if (
+            !empty($requiredVars) && !$this->verifyRequiredFields(
                 $this->flattenVariables($requiredVars),
                 $this->flattenVariables($recipient['variables'])
-            )) {
+            )
+        ) {
             $errors[] = $this->logError($recipient, 'Some required variables are missing');
         }
         foreach ($recipient['email'] as $email) {
             if (!isset($email['address'])) {
                 $errors[] = $this->logError($recipient, 'Missing email address');
+
                 continue;
             }
-            $to[] = ['Email' => $email['address']];
+            $to[] = [
+                'Email' => $email['address'],
+            ];
         }
         if (!empty($to)) {
             $message = $this->buildMail(
@@ -173,12 +218,17 @@ readonly class MailjetEmailService
             $messages[] = $message;
         }
 
-        return ['messages' => $messages, 'errors' => $errors];
+        return [
+            'messages' => $messages,
+            'errors' => $errors,
+        ];
     }
     private function buildMail(array $emails, array $variables, int $templateId, EmailNotification $notification, ?array $attachments): array
     {
         $message = [
-            'From' => ['Email' => $this->mailjetSenderEmail],
+            'From' => [
+                'Email' => $this->mailjetSenderEmail,
+            ],
             'To' => $emails,
             'Subject' => $notification->getEmailSubject(),
         ];
@@ -201,11 +251,12 @@ readonly class MailjetEmailService
         return $message;
     }
 
-
     private function buildMessage(array $emails, array $variables, int $templateId, EmailNotification $notification, ?array $attachments): array
     {
         $message = [
-            'From' => ['Email' => $this->mailjetSenderEmail],
+            'From' => [
+                'Email' => $this->mailjetSenderEmail,
+            ],
             'To' => $this->formatEmailList($emails),
             'Subject' => $notification->getEmailSubject(),
         ];
@@ -252,7 +303,7 @@ readonly class MailjetEmailService
 
     private function formatEmailList(array $emails): array
     {
-        return array_map(fn($email) => [
+        return array_map(fn ($email) => [
             'Email' => $email['address'],
             'Name' => $email['name'] ?? null,
         ], $emails);
@@ -270,8 +321,11 @@ readonly class MailjetEmailService
         if (count($prepared['errors']) === 0) {
             $response = $this->httpClient->request('POST', 'https://api.mailjet.com/v3.1/send', [
                 'auth_basic' => [$this->mailjetApiKey, $this->mailjetSecretKey],
-                'json' => ['Messages' => $prepared['messages']],
+                'json' => [
+                    'Messages' => $prepared['messages'],
+                ],
             ]);
+
             return $response->toArray(false);
         }
 
@@ -285,42 +339,7 @@ readonly class MailjetEmailService
             'error' => $errorMessage,
         ];
         $this->logger->error('Email preparation error', $error);
+
         return $error;
-    }
-
-    public function flattenVariables(array $variables, string $prefix = ''): array
-    {
-        $flattened = [];
-        foreach ($variables as $key => $value) {
-            $newKey = $prefix ? "$prefix.$key" : $key;
-            if (is_array($value) || is_object($value)) {
-                $flattened += $this->flattenVariables((array) $value, $newKey);
-            } else {
-                $flattened[$newKey] = $value;
-            }
-        }
-        return $flattened;
-    }
-
-    /**
-     * @param array $requiredFields
-     * @param array $data
-     *
-     * @return bool
-     */
-    public function verifyRequiredFields(array $requiredFields, array $data): bool
-    {
-        foreach ($requiredFields as $key => $field) {
-            if (str_contains($key, 'items.')) {
-                $parts = explode('.', $field);
-                $indexKey = "items.0." . $parts[0];
-                if (!isset($data[$indexKey])) {
-                    return false;
-                }
-            } elseif (!isset($data[$field])) {
-                return false;
-            }
-        }
-        return true;
     }
 }

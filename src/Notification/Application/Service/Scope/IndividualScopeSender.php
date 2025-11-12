@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Notification\Application\Service\Scope;
 
 use App\Notification\Application\ApiProxy\UserProxy;
-use Doctrine\ORM\Exception\ORMException;
 use App\Notification\Application\Service\Interfaces\NotificationSenderInterface;
 use App\Notification\Application\Service\NotificationService;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use App\Notification\Domain\Entity\PushNotification;
 use App\Notification\Domain\Entity\EmailNotification;
+use App\Notification\Domain\Entity\PushNotification;
 use App\Notification\Domain\Entity\SmsNotification;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -30,20 +29,16 @@ readonly class IndividualScopeSender implements NotificationSenderInterface
     }
 
     /**
-     * @param SmsNotification|EmailNotification|PushNotification $notification
-     * @param string                                             $channel
-     *
      * @throws ORMException
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     * @return array
      */
     public function send(SmsNotification|EmailNotification|PushNotification $notification, string $channel): array
     {
-        if($channel === 'EMAIL') {
+        if ($channel === 'EMAIL') {
             return $this->notificationService->sendNotificationEmail(
                 $notification
             );
@@ -60,7 +55,6 @@ readonly class IndividualScopeSender implements NotificationSenderInterface
             $users[$key] = $usersById[$userId] ?? null;
         }
 
-
         if (!empty($users)) {
             return $this->notificationService->sendNotification(
                 $users,
@@ -69,6 +63,6 @@ readonly class IndividualScopeSender implements NotificationSenderInterface
             );
         }
 
-        throw new ORMException("Empty members");
+        throw new ORMException('Empty members');
     }
 }

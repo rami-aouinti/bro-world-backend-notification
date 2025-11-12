@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Notification\Transport\Controller\Api;
 
-use App\General\Domain\Utils\JSON;
-use App\General\Infrastructure\ValueObject\SymfonyUser;
 use App\Notification\Domain\Entity\MailjetTemplate;
+use Bro\WorldCoreBundle\Domain\Utils\JSON;
+use Bro\WorldCoreBundle\Infrastructure\ValueObject\SymfonyUser;
 use JsonException;
 use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,12 +32,8 @@ readonly class GetTemplateController
     /**
      * Get current user blog data, accessible only for 'IS_AUTHENTICATED_FULLY' users
      *
-     * @param SymfonyUser     $symfonyUser
-     * @param MailjetTemplate $template
-     *
      * @throws ExceptionInterface
      * @throws JsonException
-     * @return JsonResponse
      */
     #[Route(path: '/v1/templates/{template}', name: 'public_template', methods: [Request::METHOD_GET])]
     #[Cache(smaxage: 10)]
@@ -53,6 +49,7 @@ readonly class GetTemplateController
             ),
             true,
         );
+
         return new JsonResponse($output);
     }
 }

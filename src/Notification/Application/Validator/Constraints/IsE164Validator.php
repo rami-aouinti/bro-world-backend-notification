@@ -16,12 +16,6 @@ use function is_string;
  */
 class IsE164Validator extends ConstraintValidator
 {
-    /**
-     * @param            $value
-     * @param Constraint $constraint
-     *
-     * @return void
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof IsE164) {

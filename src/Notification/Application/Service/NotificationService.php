@@ -36,38 +36,31 @@ readonly class NotificationService
     ) {
     }
 
-    /**
-     * @param SmsNotification|EmailNotification|PushNotification $notification
-     * @return array
-     */
     public function sendNotificationEmail(SmsNotification|EmailNotification|PushNotification $notification): array
     {
         $response = [];
+
         try {
             $response = $this->emailService->generateEmail($notification, null);
-        } catch (ClientExceptionInterface|DecodingExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface) {
+        } catch (ClientExceptionInterface | DecodingExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface) {
         }
         $notification->setCompletedAt(new DateTime('now'));
         $this->notificationRepository->save($notification);
+
         return $response;
     }
 
     /**
-     * @param array|null $users
-     * @param SmsNotification|EmailNotification|PushNotification $notification
-     * @param string $channel
-     * @return array
      * @throws ORMException
      */
     public function sendNotification(?array $users, SmsNotification|EmailNotification|PushNotification $notification, string $channel): array
     {
         $response = [];
 
-        if($users) {
+        if ($users) {
             foreach (array_chunk($users, 50) as $batch) {
                 try {
                     $response[] = $this->sendBatch($batch, $channel, $notification);
-
                 } catch (Exception | TransportExceptionInterface | \Symfony\Component\Mailer\Exception\TransportExceptionInterface $e) {
                     throw new InvalidArgumentException($e->getMessage());
                 }
@@ -80,14 +73,55 @@ readonly class NotificationService
         $notification->setCompletedAt(new DateTime('now'));
         $this->notificationRepository->save($notification);
 
-        return  $response;
+        return $response;
     }
 
     /**
-     * @param array|null $users
-     * @param string $channel
-     * @param SmsNotification|EmailNotification|PushNotification $notification
-     * @return array
+     * @throws ORMException
+     */
+    public function fetchAllMembers(?array $scopeTarget, Scope $scope, string $channel): array
+    {
+        if ($scopeTarget) {
+            $users = $this->generateAllUsers($scopeTarget, $scope);
+        } else {
+            $users = $this->generateAllUsers(null, $scope);
+        }
+
+        if (!empty($users)) {
+            return array_filter($users, static function ($user) use ($channel) {
+                return match ($channel) {
+                    'EMAIL' => isset($user['email']),
+                    'PUSH' => isset($user['name']),
+                    'SMS' => isset($user['phone']),
+                    default => false,
+                };
+            });
+        }
+
+        throw new ORMException('Empty members');
+    }
+
+    public function generateAllUsers(?array $scopeTarget, Scope $scope): array
+    {
+        return $this->getUsers();
+    }
+
+    public function getUsers(): array
+    {
+        return [
+            [
+                'id' => '123e4567-e89b-12d3-a456-426614174000',
+                'name' => 'Rami Aouinti',
+                'title' => 'Backend-end Developer',
+                'email' => 'rami.aouinti@gmail.com',
+                'avatar' => 'https://robohash.org/rami',
+                'phone' => '004917635587613',
+                'role' => 'Member',
+            ],
+        ];
+    }
+
+    /**
      * @throws ORMException
      */
     private function sendBatch(?array $users, string $channel, SmsNotification|EmailNotification|PushNotification $notification): array
@@ -113,51 +147,5 @@ readonly class NotificationService
         }
 
         return $response;
-    }
-
-    /**
-     * @throws ORMException
-     */
-    public function fetchAllMembers(?array $scopeTarget, Scope $scope, string $channel): array
-    {
-        if($scopeTarget) {
-            $users = $this->generateAllUsers($scopeTarget, $scope);
-
-        } else {
-            $users = $this->generateAllUsers(null, $scope);
-        }
-
-        if (!empty($users)) {
-            return array_filter($users, static function ($user) use ($channel) {
-                return match ($channel) {
-                    'EMAIL' => isset($user['email']),
-                    'PUSH' => isset($user['name']),
-                    'SMS' => isset($user['phone']),
-                    default => false,
-                };
-            });
-        }
-
-        throw new ORMException("Empty members");
-    }
-
-    public function generateAllUsers(?array $scopeTarget, Scope $scope): array
-    {
-        return $this->getUsers();
-    }
-
-    public function getUsers(): array
-    {
-        return [
-            [
-                'id' => '123e4567-e89b-12d3-a456-426614174000',
-                'name' => 'Rami Aouinti',
-                'title' => 'Backend-end Developer',
-                'email' => 'rami.aouinti@gmail.com',
-                'avatar' => 'https://robohash.org/rami',
-                'phone' => '004917635587613',
-                'role' => 'Member',
-            ]
-        ];
     }
 }

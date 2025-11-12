@@ -9,9 +9,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- *
- */
 trait WorkplaceIdTrait
 {
     #[ORM\Column(type: 'uuid', nullable: true)]

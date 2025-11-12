@@ -9,17 +9,14 @@ use Doctrine\Persistence\ObjectManager;
 use Exception;
 
 /**
- * Class AppFixtures
  * @package App\DataFixtures
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 class AppFixtures extends Fixture
 {
-    public function __construct(
-    )
+    public function __construct()
     {
     }
-
 
     /**
      * @throws Exception

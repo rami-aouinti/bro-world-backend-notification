@@ -18,25 +18,17 @@ class SmsService
 
     private string $from;
 
-    /**
-     * @param string $sid
-     * @param string $token
-     * @param string $from
-     */
     public function __construct(
-        string $sid, string $token, string $from
-    )
-    {
+        string $sid,
+        string $token,
+        string $from
+    ) {
         $this->client = new Client($sid, $token);
         $this->from = $from;
     }
 
     /**
-     * @param SmsNotification $notification
-     * @param array|null      $user
-     *
      * @throws TwilioException
-     * @return array
      */
     public function generateSms(SmsNotification $notification, ?array $user): array
     {
@@ -46,8 +38,7 @@ class SmsService
         ]);
 
         return [
-            'status' => $response
+            'status' => $response,
         ];
     }
-
 }

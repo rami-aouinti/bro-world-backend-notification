@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Notification\Transport\Controller\Api;
 
-use App\General\Infrastructure\ValueObject\SymfonyUser;
 use App\Notification\Application\Service\MailjetEmailService;
 use App\Notification\Application\Service\NotificationManager;
 use App\Notification\Infrastructure\Repository\NotificationRepository;
+use Bro\WorldCoreBundle\Infrastructure\ValueObject\SymfonyUser;
 use DateTime;
-use Exception;
 use JsonException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -21,10 +20,8 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use OpenApi\Attributes as OA;
 
 /**
- * Class MailjetEmailController
  * @package App\Controller
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -36,16 +33,11 @@ class MailjetEmailController
         private readonly NotificationManager $notificationManager,
         private readonly MailjetEmailService $mailjetEmailService,
         private readonly NotificationRepository $notificationRepository
-    )
-    {
+    ) {
     }
 
     /**
-     * @param SymfonyUser $symfonyUser
-     * @param Request     $request
-     *
      * @throws JsonException
-     * @return JsonResponse
      */
     #[Route(path: '/v1/platform/notifications/batch', name: 'notification_batch_create', methods: [Request::METHOD_POST])]
     public function __invoke(SymfonyUser $symfonyUser, Request $request): JsonResponse
@@ -56,24 +48,22 @@ class MailjetEmailController
 
         try {
             $response = $this->mailjetEmailService->sendEmailBatch($notification);
-            if($response) {
+            if ($response) {
                 foreach ($response as $value) {
-                    if(!isset($value['error'])) {
+                    if (!isset($value['error'])) {
                         $notification->setCompletedAt(new DateTime('now'));
                     }
                     $this->notificationRepository->save($notification);
                 }
             }
-        } catch (ClientExceptionInterface|DecodingExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
+        } catch (ClientExceptionInterface | DecodingExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e) {
         }
+
         return new JsonResponse($notification->getId(), 200);
     }
 
     /**
-     * @param Request $request
-     *
      * @throws JsonException
-     * @return array
      */
     private function populateEntity(Request $request): array
     {

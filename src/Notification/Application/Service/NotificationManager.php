@@ -42,16 +42,13 @@ readonly class NotificationManager
         private SerializerInterface $serializer,
         private ValidatorInterface $validator,
         private NotificationRepository $notificationRepository,
-        private MailjetEmailService       $mailjetEmailService,
+        private MailjetEmailService $mailjetEmailService,
         private MailjetTemplateRepository $templateRepository,
         private NotificationFactoryResolver $notificationFactoryResolver
     ) {
     }
 
     /**
-     * @param string $notificationId
-     * @param string $channel
-     * @return array
      * @throws ORMException
      * @throws TransportExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
@@ -64,14 +61,11 @@ readonly class NotificationManager
         }
 
         return [
-            'message' => 'Entity not found'
+            'message' => 'Entity not found',
         ];
     }
 
     /**
-     * @param $notification
-     * @param string $channel
-     * @return array
      * @throws ORMException
      * @throws TransportExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
@@ -84,15 +78,14 @@ readonly class NotificationManager
             Scope::SEGMENT => $this->segmentScope->send($notification, $channel),
             Scope::WORKPLACE => $this->workplaceScope->send($notification, $channel),
             default => throw new InvalidArgumentException(
-                sprintf('Unknown notification scope: %s', $notification->getScope())),
+                sprintf('Unknown notification scope: %s', $notification->getScope())
+            ),
         };
     }
 
     /**
      * Prepares and validates a notification.
      *
-     * @param array $data
-     * @param array|null $paths
      * @return Notification Returns the prepared notification object.
      * @throws Exception
      */
@@ -122,20 +115,6 @@ readonly class NotificationManager
         return $notification;
     }
 
-    private function formatErrors(ConstraintViolationListInterface $errors): string
-    {
-        $messages = [];
-        foreach ($errors as $error) {
-            $messages[] = sprintf("%s: %s", $error->getPropertyPath(), $error->getMessage());
-        }
-        return implode("\n", $messages);
-    }
-
-    /**
-     *
-     * @param Request $request
-     * @return array
-     */
     public function getPaths(Request $request): array
     {
         $paths = [];
@@ -157,16 +136,7 @@ readonly class NotificationManager
         return $paths;
     }
 
-    private function getUploadDir(): string
-    {
-        return dirname(__DIR__, 2) . '/var/uploads';
-    }
-
-
     /**
-     *
-     * @param array $recipient
-     * @param int|string $templateId
      * @throws Exception
      */
     public function verifyVariables(array $recipient, int|string $templateId): void
@@ -175,7 +145,9 @@ readonly class NotificationManager
             return;
         }
 
-        $template = $this->templateRepository->findOneBy(['templateId' => $templateId]);
+        $template = $this->templateRepository->findOneBy([
+            'templateId' => $templateId,
+        ]);
 
         if (!$template) {
             throw new RuntimeException('Template not found.');
@@ -197,4 +169,18 @@ readonly class NotificationManager
         }
     }
 
+    private function formatErrors(ConstraintViolationListInterface $errors): string
+    {
+        $messages = [];
+        foreach ($errors as $error) {
+            $messages[] = sprintf('%s: %s', $error->getPropertyPath(), $error->getMessage());
+        }
+
+        return implode("\n", $messages);
+    }
+
+    private function getUploadDir(): string
+    {
+        return dirname(__DIR__, 2) . '/var/uploads';
+    }
 }

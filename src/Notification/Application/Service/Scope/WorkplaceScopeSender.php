@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Notification\Application\Service\Scope;
 
-use Doctrine\ORM\Exception\ORMException;
-use App\Notification\Domain\Entity\PushNotification;
-use App\Notification\Domain\Entity\EmailNotification;
-use App\Notification\Domain\Entity\SmsNotification;
 use App\Notification\Application\Service\Interfaces\NotificationSenderInterface;
 use App\Notification\Application\Service\NotificationService;
+use App\Notification\Domain\Entity\EmailNotification;
+use App\Notification\Domain\Entity\PushNotification;
+use App\Notification\Domain\Entity\SmsNotification;
+use Doctrine\ORM\Exception\ORMException;
 
 /**
  * @package App\Notification\Application\Service\Scope
@@ -23,14 +23,11 @@ readonly class WorkplaceScopeSender implements NotificationSenderInterface
     }
 
     /**
-     * @param SmsNotification|EmailNotification|PushNotification $notification
-     * @param string $channel
-     * @return array
      * @throws ORMException
      */
     public function send(SmsNotification|EmailNotification|PushNotification $notification, string $channel): array
     {
-        if($channel === 'EMAIL') {
+        if ($channel === 'EMAIL') {
             return $this->notificationService->sendNotificationEmail(
                 $notification
             );
@@ -45,6 +42,6 @@ readonly class WorkplaceScopeSender implements NotificationSenderInterface
             );
         }
 
-        throw new ORMException("Empty members");
+        throw new ORMException('Empty members');
     }
 }

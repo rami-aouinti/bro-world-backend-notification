@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace App\Notification\Transport\Controller\Api;
 
-use App\General\Infrastructure\ValueObject\SymfonyUser;
 use App\Notification\Application\Service\NotificationManager;
+use Bro\WorldCoreBundle\Infrastructure\ValueObject\SymfonyUser;
 use Doctrine\ORM\Exception\ORMException;
 use Exception;
 use JsonException;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use OpenApi\Attributes as OA;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class MailjetEmailController
  * @package App\Controller
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -27,12 +26,10 @@ readonly class NotificationMailjetEmailController
 {
     public function __construct(
         private NotificationManager $notificationManager
-    )
-    {
+    ) {
     }
 
     /**
-     *
      * @throws JsonException
      * @throws ORMException
      * @throws TransportExceptionInterface
@@ -48,42 +45,39 @@ readonly class NotificationMailjetEmailController
             $this->notificationManager->getPaths($request)
         );
 
-        if(($data['channel'] === 'EMAIL') &&  ($data['templateId'] !== 0 )) {
+        if (($data['channel'] === 'EMAIL') && ($data['templateId'] !== 0)) {
             $this->notificationManager->verifyVariables($data['recipients'], $data['templateId']);
         }
 
-
         $this->notificationManager->dispatch($notification->getId(), $data['channel']);
+
         return new JsonResponse($notification->getId(), 200);
     }
 
     /**
-     * @param Request $request
-     *
      * @throws JsonException
-     * @return array
      */
     private function populateEntity(Request $request): array
     {
         $notificationData = [
             'channel' => $request->request->get('channel'),
             'scope' => $request->request->get('scope'),
-            'sendAfter' => $request->request->get('sendAfter')
+            'sendAfter' => $request->request->get('sendAfter'),
         ];
 
-        if($request->request->get('channel') === "PUSH") {
+        if ($request->request->get('channel') === 'PUSH') {
             $data = [
                 'topic' => $request->request->get('topic'),
                 'pushTitle' => $request->request->get('pushTitle'),
                 'pushSubtitle' => $request->request->get('pushSubtitle'),
                 'pushContent' => $request->request->get('pushContent'),
-                'scopeTarget' => json_decode($request->request->get('scopeTarget'), true, 512, JSON_THROW_ON_ERROR)
+                'scopeTarget' => json_decode($request->request->get('scopeTarget'), true, 512, JSON_THROW_ON_ERROR),
             ];
-        } else if($request->request->get('channel') === "SMS") {
+        } elseif ($request->request->get('channel') === 'SMS') {
             $data = [
                 'smsContent' => $request->request->get('smsContent'),
                 'smsSenderName' => $request->request->get('smsSenderName'),
-                'scopeTarget' => json_decode($request->request->get('scopeTarget'), true, 512, JSON_THROW_ON_ERROR)
+                'scopeTarget' => json_decode($request->request->get('scopeTarget'), true, 512, JSON_THROW_ON_ERROR),
             ];
         } else {
             $recipients = json_decode($request->request->get('recipients'), false, 512, JSON_THROW_ON_ERROR);
@@ -105,7 +99,6 @@ readonly class NotificationMailjetEmailController
             );
             $emailRecipientsBcc = json_decode(json_encode($emailRecipientsBcc, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
 
-
             $emailRecipientsReplyTo = json_decode(
                 $request->request->get('emailRecipientsReplyTo'),
                 false,
@@ -113,7 +106,6 @@ readonly class NotificationMailjetEmailController
                 JSON_THROW_ON_ERROR
             );
             $emailRecipientsReplyTo = json_decode(json_encode($emailRecipientsReplyTo, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
-
 
             $data = [
                 'recipients' => $recipients,

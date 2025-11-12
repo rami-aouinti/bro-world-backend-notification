@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Notification\Application\Service\Scope;
 
-use Doctrine\ORM\Exception\ORMException;
 use App\Notification\Application\Service\Interfaces\NotificationSenderInterface;
 use App\Notification\Application\Service\NotificationService;
-use App\Notification\Domain\Entity\PushNotification;
 use App\Notification\Domain\Entity\EmailNotification;
+use App\Notification\Domain\Entity\PushNotification;
 use App\Notification\Domain\Entity\SmsNotification;
+use Doctrine\ORM\Exception\ORMException;
 
 /**
  * @package App\Notification\Application\Service\Scope
@@ -27,7 +27,7 @@ readonly class GlobalScopeSender implements NotificationSenderInterface
      */
     public function send(SmsNotification|EmailNotification|PushNotification $notification, string $channel): array
     {
-        if($channel === 'EMAIL') {
+        if ($channel === 'EMAIL') {
             return $this->notificationService->sendNotificationEmail(
                 $notification
             );
@@ -41,6 +41,6 @@ readonly class GlobalScopeSender implements NotificationSenderInterface
             );
         }
 
-        throw new ORMException("Empty members");
+        throw new ORMException('Empty members');
     }
 }

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Notification\Domain\Entity\Enum;
 
 /**
- * Class Channel
- *
  * @package App\Notification\Domain\Entity\Enum
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */

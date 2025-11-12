@@ -10,14 +10,14 @@ use InvalidArgumentException;
 use Traversable;
 
 /**
- * Class NotificationFactoryResolver
- *
  * @package App\Notification\Application\Factory\Notification
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
 class NotificationFactoryResolver
 {
-    /** @var NotificationFactoryInterface[] */
+    /**
+     * @var NotificationFactoryInterface[]
+     */
     private array $factories;
 
     public function __construct(iterable $factories)
@@ -33,7 +33,6 @@ class NotificationFactoryResolver
             }
         }
 
-        throw new InvalidArgumentException("No factory found for channel: $channel");
+        throw new InvalidArgumentException("No factory found for channel: {$channel}");
     }
 }
-

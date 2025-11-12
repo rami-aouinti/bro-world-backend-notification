@@ -12,8 +12,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
 /**
- * Class UploadTemplateCommand
- *
  * @package App\Notification\Transport\Command
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -23,8 +21,9 @@ use Throwable;
 )]
 class UploadTemplateCommand extends Command
 {
-    public function __construct(private readonly MailjetTemplateService $templateService)
-    {
+    public function __construct(
+        private readonly MailjetTemplateService $templateService
+    ) {
         parent::__construct();
     }
 
@@ -33,9 +32,11 @@ class UploadTemplateCommand extends Command
         try {
             $this->templateService->fetchAndStoreTemplates();
             $output->writeln('<info>✅ Templates uploaded !</info>');
+
             return Command::SUCCESS;
         } catch (Throwable $e) {
             $output->writeln('<error>❌ Error : ' . $e->getMessage() . '</error>');
+
             return Command::FAILURE;
         }
     }

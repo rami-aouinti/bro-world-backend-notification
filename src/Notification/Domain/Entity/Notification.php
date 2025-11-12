@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Notification\Domain\Entity;
 
-use App\General\Domain\Entity\Interfaces\EntityInterface;
-use App\General\Domain\Entity\Traits\Timestampable;
-use App\General\Domain\Entity\Traits\Uuid;
+use App\Notification\Domain\Entity\Enum\Scope;
+use Bro\WorldCoreBundle\Domain\Entity\Interfaces\EntityInterface;
+use Bro\WorldCoreBundle\Domain\Entity\Traits\Timestampable;
+use Bro\WorldCoreBundle\Domain\Entity\Traits\Uuid;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,14 +16,11 @@ use Ramsey\Uuid\Doctrine\UuidBinaryOrderedTimeType;
 use Ramsey\Uuid\UuidInterface;
 use Stringable;
 use Symfony\Component\Serializer\Attribute\Groups;
-use App\Notification\Domain\Entity\Enum\Scope;
-
 use Throwable;
 
 use function is_string;
 
 /**
- * Class Notification
  * @package App\Notification\Domain\Entity
  * @author Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -39,19 +37,6 @@ class Notification implements EntityInterface, Stringable
 {
     use Timestampable;
     use Uuid;
-
-    #[ORM\Id]
-    #[ORM\Column(
-        name: 'id',
-        type: UuidBinaryOrderedTimeType::NAME,
-        unique: true,
-        nullable: false,
-    )]
-    #[\Symfony\Component\Serializer\Annotation\Groups([
-        'Notification',
-        'Notification.id',
-    ])]
-    private UuidInterface $id;
 
     #[Groups(['entity:write', 'entity:read', 'Notification', 'Notification.channel'])]
     public ?string $channel = null;
@@ -80,6 +65,19 @@ class Notification implements EntityInterface, Stringable
     #[Groups(['entity:read', 'entity:write', 'Notification', 'Notification.callback'])]
     protected ?array $callback;
 
+    #[ORM\Id]
+    #[ORM\Column(
+        name: 'id',
+        type: UuidBinaryOrderedTimeType::NAME,
+        unique: true,
+        nullable: false,
+    )]
+    #[\Symfony\Component\Serializer\Annotation\Groups([
+        'Notification',
+        'Notification.id',
+    ])]
+    private UuidInterface $id;
+
     /**
      * @throws Throwable
      */
@@ -88,14 +86,14 @@ class Notification implements EntityInterface, Stringable
         $this->id = $this->createUuid();
     }
 
-    public function getId(): string
-    {
-        return $this->id->toString();
-    }
-
     public function __toString(): string
     {
         return $this->getId();
+    }
+
+    public function getId(): string
+    {
+        return $this->id->toString();
     }
 
     public function getCallback(): ?array

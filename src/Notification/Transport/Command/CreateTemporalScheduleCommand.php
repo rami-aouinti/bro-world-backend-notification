@@ -11,8 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
 
 /**
- * Class CreateTemporalScheduleCommand
- *
  * @package App\Notification\Transport\Command
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -31,9 +29,11 @@ class CreateTemporalScheduleCommand extends Command
     {
         try {
             $output->writeln('<info>✅ Schedule created !</info>');
+
             return Command::SUCCESS;
         } catch (Throwable $e) {
             $output->writeln('<error>❌ Error : ' . $e->getMessage() . '</error>');
+
             return Command::FAILURE;
         }
     }

@@ -6,14 +6,12 @@ namespace App\Notification\Application\Factory\Notification;
 
 use App\Notification\Application\Dto\NotificationDto;
 use App\Notification\Domain\Entity\EmailNotification;
-use App\Notification\Domain\Entity\Notification;
 use App\Notification\Domain\Entity\Enum\Scope;
+use App\Notification\Domain\Entity\Notification;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 /**
- * Class EmailNotificationFactory
- *
  * @package App\Notification\Application\Factory\Notification
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -56,4 +54,3 @@ class EmailNotificationFactory implements NotificationFactoryInterface
         return $notification;
     }
 }
-

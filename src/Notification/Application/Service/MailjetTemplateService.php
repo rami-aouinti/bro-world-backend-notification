@@ -16,8 +16,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use function sprintf;
 
 /**
- * Class MailjetTemplateService
- *
  * @package App\Notification\Application\Service
  * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
  */
@@ -28,11 +26,12 @@ class MailjetTemplateService
     private string $detailUrl = 'https://api.mailjet.com/v3/REST/template/%d/detail';
 
     public function __construct(
-        private readonly HttpClientInterface    $httpClient,
+        private readonly HttpClientInterface $httpClient,
         private readonly EntityManagerInterface $entityManager,
-        private readonly string                 $mailjetApiKey,
-        private readonly string                 $mailjetSecretKey
-    ) {}
+        private readonly string $mailjetApiKey,
+        private readonly string $mailjetSecretKey
+    ) {
+    }
 
     /**
      * @throws ClientExceptionInterface
@@ -44,7 +43,7 @@ class MailjetTemplateService
     public function fetchAndStoreTemplates(): void
     {
         $response = $this->httpClient->request('GET', $this->apiUrl, [
-            'auth_basic' => [$this->mailjetApiKey, $this->mailjetSecretKey]
+            'auth_basic' => [$this->mailjetApiKey, $this->mailjetSecretKey],
         ]);
 
         $data = $response->toArray();
@@ -55,7 +54,9 @@ class MailjetTemplateService
             $variables = $this->fetchTemplateVariables($templateId);
 
             $existingTemplate = $this->entityManager->getRepository(MailjetTemplate::class)
-                ->findOneBy(['templateId' => $templateId]);
+                ->findOneBy([
+                    'templateId' => $templateId,
+                ]);
 
             if (!$existingTemplate) {
                 $existingTemplate = new MailjetTemplate();
@@ -72,8 +73,6 @@ class MailjetTemplateService
     }
 
     /**
-     * @param int $templateId
-     * @return array
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
@@ -84,19 +83,18 @@ class MailjetTemplateService
     {
         try {
             $response = $this->httpClient->request('GET', sprintf($this->detailContentUrl, $templateId), [
-                'auth_basic' => [$this->mailjetApiKey, $this->mailjetSecretKey]
+                'auth_basic' => [$this->mailjetApiKey, $this->mailjetSecretKey],
             ]);
 
             $data = $response->toArray();
 
             if (isset($data['Data'])) {
                 foreach ($data['Data'] as $document) {
-                    if(isset($document['Text-part'])) {
+                    if (isset($document['Text-part'])) {
                         return $this->extractVariables($document['Text-part']);
                     }
                 }
             }
-
         } catch (ClientExceptionInterface $e) {
             if ($e->getCode() !== 404) {
                 throw $e;
@@ -135,7 +133,7 @@ class MailjetTemplateService
         unset($attributes);
         foreach ($groupedVariables as $item => $attributes) {
             $result[] = [
-                $item => $attributes
+                $item => $attributes,
             ];
         }
 

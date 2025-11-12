@@ -20,14 +20,10 @@ readonly class EmailService
 {
     public function __construct(
         private MailjetEmailService $mailjetEmailService
-    )
-    {
+    ) {
     }
 
     /**
-     * @param EmailNotification $notification
-     * @param array|null $user
-     * @return array
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface

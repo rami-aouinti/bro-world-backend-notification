@@ -18,11 +18,10 @@ doctrine:
                 profiling_collect_backtrace: '%kernel.debug%'
                 use_savepoints: true
         types:
-            datetime: App\General\Domain\Doctrine\DBAL\Types\UTCDateTimeType
-            datetimetz: App\General\Domain\Doctrine\DBAL\Types\UTCDateTimeType
-            EnumLanguage: App\General\Domain\Doctrine\DBAL\Types\EnumLanguageType
-            EnumLocale: App\General\Domain\Doctrine\DBAL\Types\EnumLocaleType
-            EnumLogLogin: App\General\Domain\Doctrine\DBAL\Types\EnumLogLoginType
+            datetime: Bro\WorldCoreBundle\Domain\Doctrine\DBAL\Types\UTCDateTimeType
+            datetimetz: Bro\WorldCoreBundle\Domain\Doctrine\DBAL\Types\UTCDateTimeType
+            EnumLanguage: Bro\WorldCoreBundle\Domain\Doctrine\DBAL\Types\EnumLanguageType
+            EnumLocale: Bro\WorldCoreBundle\Domain\Doctrine\DBAL\Types\EnumLocaleType
 
     orm:
         auto_generate_proxy_classes: true
@@ -38,12 +37,6 @@ doctrine:
                 validate_xml_mapping: true
                 connection: default
                 mappings:
-                    General:
-                        type: attribute
-                        is_bundle: false
-                        dir: '%kernel.project_dir%/src/General/Domain/Entity'
-                        prefix: 'App\General\Domain\Entity'
-                        alias: General
                     Notification:
                         type: attribute
                         is_bundle: false
@@ -55,8 +48,8 @@ doctrine:
                         datesub: DoctrineExtensions\Query\Mysql\DateSub
                         now: DoctrineExtensions\Query\Mysql\Now
                     string_functions:
-                        uuid_o_t_to_bin: App\General\Infrastructure\DQL\UuidOTToBin
-                        bin_to_uuid_o_t: App\General\Infrastructure\DQL\BinToUuidOT
+                        uuid_o_t_to_bin: Bro\WorldCoreBundle\Infrastructure\DQL\UuidOTToBin
+                        bin_to_uuid_o_t: Bro\WorldCoreBundle\Infrastructure\DQL\BinToUuidOT
 
 when@prod: &not-dev
     doctrine:

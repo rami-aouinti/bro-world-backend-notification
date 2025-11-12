@@ -49,7 +49,7 @@ readonly class PushService
 
         return [
             'status' => 'success',
-            'message' => $response
+            'message' => $response,
         ];
     }
 }
