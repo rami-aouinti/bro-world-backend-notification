@@ -67,6 +67,10 @@ services:
             $token: '%env(TWILIO_AUTH_TOKEN)%'
             $from: '%env(TWILIO_FROM)%'
 
+    App\Notification\Application\Service\Channel\PushService:
+        arguments:
+            $mercurePublicUrl: '%env(MERCURE_PUBLIC_URL)%'
+
     App\Notification\Application\Service\MailjetTemplateService:
         arguments:
             $mailjetApiKey: '%mailjet_api_key%'
