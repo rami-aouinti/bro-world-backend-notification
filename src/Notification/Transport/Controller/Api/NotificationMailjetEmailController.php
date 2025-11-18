@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace App\Notification\Transport\Controller\Api;
 
 use App\Notification\Application\Service\NotificationManager;
+use App\Notification\Domain\Message\NotificationDispatchMessage;
 use Bro\WorldCoreBundle\Infrastructure\ValueObject\SymfonyUser;
 use Doctrine\ORM\Exception\ORMException;
 use Exception;
 use JsonException;
 use OpenApi\Attributes as OA;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
@@ -25,7 +28,9 @@ use Symfony\Component\Routing\Attribute\Route;
 readonly class NotificationMailjetEmailController
 {
     public function __construct(
-        private NotificationManager $notificationManager
+        private NotificationManager $notificationManager,
+        #[Autowire(service: 'messenger.bus.command')]
+        private readonly MessageBusInterface $commandBus
     ) {
     }
 
@@ -49,7 +54,9 @@ readonly class NotificationMailjetEmailController
             $this->notificationManager->verifyVariables($data['recipients'], $data['templateId']);
         }
 
-        $this->notificationManager->dispatch($notification->getId(), $data['channel']);
+        $this->commandBus->dispatch(
+            new NotificationDispatchMessage($notification->getId(), $data['channel'])
+        );
 
         return new JsonResponse($notification->getId(), 200);
     }
