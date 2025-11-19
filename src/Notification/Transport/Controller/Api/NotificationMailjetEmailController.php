@@ -29,7 +29,6 @@ readonly class NotificationMailjetEmailController
 {
     public function __construct(
         private NotificationManager $notificationManager,
-        #[Autowire(service: 'messenger.bus.command')]
         private readonly MessageBusInterface $commandBus
     ) {
     }
